@@ -1,0 +1,28 @@
+@import '../../vendor/filament/filament/resources/css/theme.css';
+@import '../../vendor/awcodes/filament-curator/resources/css/plugin.css';
+@import '../../vendor/pboivin/filament-peek/resources/css/plugin.css';
+
+@import 'cropperjs/dist/cropper.css';
+
+@config '../../tailwind.admin.js';
+
+.dark .fi-sidebar,
+.dark .fi-sidebar-header,
+.dark .fi-topbar nav {
+  @apply !bg-[#111] !ring-0;
+}
+
+.dark .fi-topbar nav {
+  @apply !border-0;
+}
+
+.fi-header-heading,
+.fi-wi-stats-overview-stat-icon,
+.fi-section-header-icon,
+.fi-ta-text-item-icon {
+  @apply !text-primary-500;
+}
+
+.filament-peek-modal-title {
+  @apply text-primary-500 uppercase tracking-wider before:content-['Page_'] before:text-white;
+}
