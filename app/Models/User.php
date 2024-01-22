@@ -5,6 +5,8 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
@@ -22,6 +24,8 @@ class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'name',
         'email',
+        'branch_id',
+        'role',
         'password',
     ];
 
@@ -60,5 +64,21 @@ class User extends Authenticatable implements FilamentUser
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function vendorTransfers(): HasMany
+    {
+        return $this->hasMany(VendorTransfer::class);
+    }
+
+    public function vendorProducts(): HasMany
+    {
+        return $this->hasMany(VendorProduct::class);
     }
 }

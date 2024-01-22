@@ -3,12 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\Product;
 use App\Models\User;
+use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
@@ -52,6 +55,20 @@ class UserResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+
+                Forms\Components\Select::make('branch_id')
+                    ->relationship('branch', 'name')
+                    ->required()
+                    ->native(false),
+
+                Forms\Components\Select::make('role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'seller' => 'Seller',
+                        'vendor' => 'Vendor',
+                    ])
+                    ->required()
+                    ->native(false),
 
                 Forms\Components\TextInput::make('email')
                     ->email()
