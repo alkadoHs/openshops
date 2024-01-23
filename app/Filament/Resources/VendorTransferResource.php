@@ -6,12 +6,15 @@ use App\Filament\Resources\VendorTransferResource\Pages;
 use App\Filament\Resources\VendorTransferResource\RelationManagers;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\VendorProduct;
 use App\Models\VendorTransfer;
 use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,12 +67,41 @@ class VendorTransferResource extends Resource
                     ->label('Product')
                     ->sortable(),
                 TextColumn::make('stock'),
-                TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state) => match ($state) {
-                        'pending' => 'warning',
-                        'approved' => 'success',
-                        'rejected' => 'danger'
+                SelectColumn::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected'
+                    ])
+                    ->disableOptionWhen(
+                        //disable pending option to all users and enable rejected or approved to vendors
+                        fn (string $value) => $value == 'pending' || (($value == 'rejected' || $value == 'approved') && auth()->user()->role != 'vendor')
+                        )
+                    ->disablePlaceholderSelection()
+                    ->beforeStateUpdated(function ($record, $state) {
+                        $product = Product::find($record->product_id);
+                        if($state == 'approved') {
+                            $product->decrement('stock', $record->stock);
+
+                            //add stock to vendorproduct
+                            $vendorProduct = VendorProduct::where('product_id', $record->product_id)
+                                                            ->where('user_id', $record->user_id)->first();
+                            if($vendorProduct) {
+                                $vendorProduct->increment('stock', $record->stock);
+                            } else {
+                                VendorProduct::create([
+                                    'user_id'=> $record->user_id,
+                                    'product_id'=> $record->product_id,
+                                    'stock' => $record->stock,
+                                ]);
+                            }
+                        }
+
+                        Notification::make()
+                                ->success()
+                                ->body("$state successfully.")
+                                ->color('success')
+                                ->send();
                     })
             ])
             ->filters([

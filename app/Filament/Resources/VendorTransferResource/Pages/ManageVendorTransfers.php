@@ -4,7 +4,6 @@ namespace App\Filament\Resources\VendorTransferResource\Pages;
 
 use App\Filament\Resources\VendorTransferResource;
 use App\Models\Product;
-use App\Models\VendorProduct;
 use App\Models\VendorTransfer;
 use Filament\Actions;
 use Filament\Actions\CreateAction;
@@ -61,8 +60,6 @@ class ManageVendorTransfers extends ManageRecords
                     
                         $action->cancel();
                     }
-                    
-                    $product->decrement('stock', $data['stock']);
                 }),
         ];
     }

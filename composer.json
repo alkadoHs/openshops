@@ -1,11 +1,13 @@
 {
-  "name": "log1x/filament-starter",
+  "name": "log1x/opensales",
   "type": "project",
-  "description": "A beautiful starting point for your next TALL stack application.",
+  "description": "Shops and stores management system.",
   "keywords": [
-    "laravel",
-    "livewire",
-    "filament"
+    "mauzo",
+    "duka",
+    "mahesabu",
+    "store",
+    "bidhaa"
   ],
   "license": "MIT",
   "require": {

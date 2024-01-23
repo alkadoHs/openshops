@@ -6,6 +6,7 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\VendorProduct;
 use Filament\Forms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -58,6 +59,19 @@ class OrderResource extends Resource
                                  function (array $data) {
                                     if(auth()->user()->role == 'vendor') {
                                         //decrement vendors stock
+                                        $product = VendorProduct::where('product_id', $data['product_id'])
+                                                                    ->where('user_id', auth()->user()->id)->first();
+
+                                        if($product->stock < $data['quantity']) {
+                                            Notification::make()
+                                                ->title('Order creation failed!')
+                                                ->body(" {$product->mainProduct->name} stock available is $product->stock, you can sell only the stock available")
+                                                ->color('danger')
+                                                ->send();
+                                            return null;
+                                        } else {
+                                            $product->decrement("stock", $data['quantity']);
+                                        }
                                     } else {
                                         //decrement branch product stock
 
@@ -83,11 +97,20 @@ class OrderResource extends Resource
                                     ->searchable()
                                     ->live()
                                     ->options(
-                                        fn (Product $query) => $query->where('branch_id', auth()->user()->branch_id)
+                                        function () {
+                                            if(auth()->user()->role == 'vendor') {
+                                                return VendorProduct::where('user_id', auth()->user()->id)
+                                                                ->where('stock', '!=', 0)
+                                                                ->with('product.mainProduct')
+                                                                ->get()
+                                                                ->pluck('product.mainProduct.name', 'product_id');
+                                            }
+                                            return Product::where('branch_id', auth()->user()->branch_id)
                                                                      ->where('stock', '!=', 0)
                                                                      ->with('mainProduct')
                                                                      ->get()
-                                                                     ->pluck('mainProduct.name', 'id')
+                                                                     ->pluck('mainProduct.name', 'id');
+                                        } 
                                     )
                                     ->disableOptionWhen(
                                         fn ($value, $state, Get $get) => collect($get('../*.product_id'))

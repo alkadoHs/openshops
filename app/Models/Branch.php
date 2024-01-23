@@ -32,4 +32,15 @@ class Branch extends Model
     {
         return $this->hasMany(VendorTransfer::class);
     }
+
+    public function returnStocks(): HasMany
+    {
+        return $this->hasMany(ReturnStock::class);
+    }
+
+    public function branchTransfers(): HasMany
+    {
+        return $this->hasMany(BranchTransfer::class);
+    }
+
 }

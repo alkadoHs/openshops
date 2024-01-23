@@ -37,9 +37,20 @@ class Product extends Model
         return $this->hasMany(VendorTransfer::class);
     }
 
-
+    
+    
     public function vendorProducts(): HasMany
     {
         return $this->hasMany(VendorProduct::class);
+    }
+
+    public function returnStocks(): HasMany
+    {
+        return $this->hasMany(ReturnStock::class);
+    }
+
+    public function branchTransfers(): HasMany
+    {
+        return $this->hasMany(BranchTransfer::class);
     }
 }

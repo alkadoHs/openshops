@@ -81,4 +81,14 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(VendorProduct::class);
     }
+
+    public function returnStocks(): HasMany
+    {
+        return $this->hasMany(ReturnStock::class);
+    }
+
+    public function branchTransfers(): HasMany
+    {
+        return $this->hasMany(BranchTransfer::class);
+    }
 }
