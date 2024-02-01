@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReturnStockResource\Pages;
 use App\Filament\Resources\ReturnStockResource\RelationManagers;
+use App\Models\Branch;
 use App\Models\Product;
 use App\Models\ReturnStock;
+use App\Models\User;
 use App\Models\VendorProduct;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -20,7 +22,11 @@ class ReturnStockResource extends Resource
 {
     protected static ?string $model = ReturnStock::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string $title = 'Stock Returns';
+
+    protected static ?string $navigationGroup = "Transfers";
+
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
 
     public static function form(Form $form): Form
     {
@@ -50,14 +56,25 @@ class ReturnStockResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                if(auth()->user()->role == 'vendor') {
+                    return $query->where('user_id', auth()->user()->id);
+                }
+                if (auth()->user()->role == 'seller') {
+                    return $query->where('branch_id', auth()->user()->branch_id);
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Vendor')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->visible(auth()->user()->role != 'vendor'),
                 Tables\Columns\TextColumn::make('branch.name')
                     ->label('To Branch')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable()
+                    ->visible(auth()->user()->role != 'seller'),
                 Tables\Columns\TextColumn::make('product.mainProduct.name')
                     ->searchable()
                     ->sortable(),
@@ -128,7 +145,33 @@ class ReturnStockResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                //filter by branch and by user(vendor)
+                Tables\Filters\SelectFilter::make('branch_id')
+                    ->label('Branch')
+                    ->options(
+                        Branch::all()->pluck('name', 'id')
+                    )
+                    ->native(false)
+                    ->visible(auth()->user()->role == 'admin' || auth()->user()->role == 'superuser'),
+
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label('Vendor')
+                    ->options(
+                        User::where('role', 'vendor')->get()->pluck('name', 'id')
+                    )
+                    ->searchable()
+                    ->preload()
+                    ->visible(auth()->user()->role == 'admin' || auth()->user()->role == 'superuser'),
+                
+                    //filter by status
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected'
+                    ])
+                    ->native(false)
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

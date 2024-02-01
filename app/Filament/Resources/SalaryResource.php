@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\MainProductResource\Pages;
-use App\Filament\Resources\MainProductResource\RelationManagers;
-use App\Models\MainProduct;
+use App\Filament\Resources\SalaryResource\Pages;
+use App\Filament\Resources\SalaryResource\RelationManagers;
+use App\Models\Salary;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,32 +14,33 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class MainProductResource extends Resource
+class SalaryResource extends Resource
 {
-    protected static ?string $model = MainProduct::class;
+    protected static ?string $model = Salary::class;
 
-    protected static string $title = 'Main Products';
+    protected static string $title = 'Salaries';
 
-    protected static ?string $navigationGroup = "Stocks";
+    protected static ?string $navigationGroup = "Financials";
 
-    protected static ?string $navigationIcon = 'heroicon-o-cube';
+    protected static ?string $navigationLabel = 'Salaries';
+
+    protected static ?string $navigationIcon = 'heroicon-o-gift';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->unique()
-                    ->maxLength(255)
+                Forms\Components\Select::make('user_id')
+                    ->label("User")
+                    ->options(
+                        User::all()->pluck('name', 'id')
+                    )
+                    ->searchable()
+                    ->preload()
                     ->required(),
-                Forms\Components\TextInput::make('buy_price')
+                Forms\Components\TextInput::make('amount')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('retail_price')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('whole_price')
-                    ->required()
+                    ->prefix('Tsh')
                     ->numeric(),
             ]);
     }
@@ -47,15 +49,10 @@ class MainProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('buy_price')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('retail_price')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('whole_price')
+                Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -90,9 +87,9 @@ class MainProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMainProducts::route('/'),
-            'create' => Pages\CreateMainProduct::route('/create'),
-            'edit' => Pages\EditMainProduct::route('/{record}/edit'),
+            'index' => Pages\ListSalaries::route('/'),
+            'create' => Pages\CreateSalary::route('/create'),
+            'edit' => Pages\EditSalary::route('/{record}/edit'),
         ];
     }
 }

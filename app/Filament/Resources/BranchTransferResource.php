@@ -20,7 +20,11 @@ class BranchTransferResource extends Resource
 {
     protected static ?string $model = BranchTransfer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string $title = 'Branch Transfers';
+
+    protected static ?string $navigationGroup = "Transfers";
+
+    protected static ?string $navigationIcon = 'heroicon-o-cube-transparent';
 
     public static function form(Form $form): Form
     {

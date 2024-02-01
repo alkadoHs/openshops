@@ -18,7 +18,7 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationGroup = 'Collections';
+    protected static ?string $navigationGroup = 'Stocks';
 
     protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
 
@@ -78,12 +78,15 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => auth()->user()->role == 'admin' || auth()->user()->role == 'superuser' ? $query : $query->where('branch_id', auth()->user()->branch_id))
             ->columns([
                 Tables\Columns\TextColumn::make('mainProduct.name')
+                    ->label('Product')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('branch.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser"),
                 Tables\Columns\TextColumn::make('stock')
                     ->numeric()
                     ->sortable()
@@ -91,6 +94,18 @@ class ProductResource extends Resource
                     ->summarize([
                         Sum::make()->label('Total Stock')
                     ]),
+                Tables\Columns\TextColumn::make('mainProduct.retail_price')
+                    ->label('R.Price')
+                    ->numeric()
+                    ->sortable()
+                    ->visible(auth()->user()->role != 'admin' && auth()->user()->role != 'superuser')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('mainProduct.whole_price')
+                    ->label('W.Price')
+                    ->numeric()
+                    ->sortable()
+                    ->visible(auth()->user()->role != 'admin' && auth()->user()->role != 'superuser')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('stock_limit')
                     ->numeric()
                     ->toggleable()
@@ -109,19 +124,12 @@ class ProductResource extends Resource
                     ->summarize([
                         Sum::make()->label('Total Damages')
                     ]),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('value')
                     ->label('Value')
                     ->sortable()
                     ->numeric()
                     ->toggleable()
+                    ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
                     ->state(function (Product $record): int {
                         return $record->mainProduct->buy_price * $record->stock;
                     }),
@@ -129,6 +137,7 @@ class ProductResource extends Resource
                     ->label('R.Revenue')
                     ->sortable()
                     ->numeric()
+                    ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->state(function (Product $record): int {
                         return $record->mainProduct->retail_price * $record->stock;
@@ -137,6 +146,7 @@ class ProductResource extends Resource
                     ->label('W.Revenue')
                     ->sortable()
                     ->numeric()
+                    ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->state(function (Product $record): int {
                         return $record->mainProduct->whole_price * $record->stock;
@@ -146,6 +156,7 @@ class ProductResource extends Resource
                     ->sortable()
                     ->numeric()
                     ->toggleable()
+                    ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
                     ->state(function (Product $record): int {
                         return ($record->mainProduct->retail_price - $record->mainProduct->buy_price) * $record->stock;
                     }),
@@ -154,9 +165,18 @@ class ProductResource extends Resource
                     ->sortable()
                     ->numeric()
                     ->toggleable()
+                    ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
                     ->state(function (Product $record): int {
                         return ($record->mainProduct->whole_price - $record->mainProduct->buy_price) * $record->stock;
-                    })
+                    }),
+                    Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('branch')
@@ -169,7 +189,8 @@ class ProductResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->role == 'admin' || auth()->user()->role == 'superuser'),
                 ]),
             ]);
     }

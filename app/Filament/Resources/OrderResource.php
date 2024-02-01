@@ -8,9 +8,9 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\VendorProduct;
 use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -22,18 +22,22 @@ class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $navigationGroup = 'Point Of Sale';
+    protected static ?string $title = 'Sales';
 
-     protected static ?int $navigationSort = 3;
+    protected static ?string $navigationGroup = "Financials";
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Sales';
 
-    public static function form(Form $form): Form
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+
+     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
+                        Forms\Components\Hidden::make('user_id')
+                            ->default(auth()->user()->id),
                         Forms\Components\Select::make('customer_id')
                             ->relationship('customer', 'name')
                             ->searchable()
@@ -94,6 +98,8 @@ class OrderResource extends Resource
                                 ) 
                             ->schema([
                                 Forms\Components\Select::make('product_id')
+                                    ->label('Select product')
+                                    ->placeholder('----')
                                     ->searchable()
                                     ->live()
                                     ->options(
@@ -121,6 +127,7 @@ class OrderResource extends Resource
                                     ->required(),
                 
                                 Forms\Components\Select::make('sell_by')
+                                    ->placeholder('----')
                                     ->options([
                                         'R' => 'Retail',
                                         'W' => 'Whole',
@@ -195,19 +202,43 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                if(auth()->user()->role != 'admin') {
+                    return $query->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc');
+                }
+                return $query->orderBy('created_at', 'desc');
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
+                    ->label('Seller')
+                    ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('customer.name')
+                    ->searchable()
+                    ->placeholder('Unknown')
                     ->sortable(),
+
+                //status if it's credit or cash: credit is when paid is less than total price and cash is when paid is equal to total price
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (Order $record) => $record->paid < $record->orderItems->reduce(fn ($total, $item) => $total + ($item->quantity * $item->price), 0) ? 'danger' : 'success')
+                    ->state(fn (Order $record) => $record->paid < $record->orderItems->reduce(fn ($total, $item) => $total + ($item->quantity * $item->price), 0) ? 'credit' : 'cash'),
+
+                Tables\Columns\TextColumn::make('Total price')
+                    ->numeric()
+                    ->state(fn (Order $record) => $record->orderItems->reduce(fn ($total, $item) => $total + ($item->quantity * $item->price), 0))
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('paid')
                     ->numeric()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -217,6 +248,7 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -224,22 +256,6 @@ class OrderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
-        ];
     }
 
     public static function updateTotals(Get $get, Set $set): void
@@ -266,5 +282,22 @@ class OrderResource extends Resource
         $set('paid', $subtotal);
         // $set('total', number_format($subtotal + ($subtotal * ($get('taxes') / 100))));
 
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListOrders::route('/'),
+            'create' => Pages\CreateOrder::route('/create'),
+            'view' => Pages\ViewOrder::route('/{record}'),
+            'edit' => Pages\EditOrder::route('/{record}/edit'),
+        ];
     }
 }

@@ -19,7 +19,11 @@ class VendorProductResource extends Resource
 {
     protected static ?string $model = VendorProduct::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string $title = 'Vendor Products';
+
+    protected static ?string $navigationGroup = "Stocks";
+
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function form(Form $form): Form
     {
@@ -32,11 +36,17 @@ class VendorProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                if(auth()->user()->role == 'vendor') {
+                    $query->where('user_id', auth()->user()->id);
+                }
+            })
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Vendor')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->visible(auth()->user()->role == 'admin' || auth()->user()->role == 'superuser'),
                 TextColumn::make('product.mainProduct.name')
                     ->label('Product')
                     ->sortable()
@@ -44,6 +54,18 @@ class VendorProductResource extends Resource
                 TextColumn::make('stock')
                     ->sortable()
                     ->numeric(),
+                TextColumn::make('product.mainProduct.retail_price')
+                    ->label('R.Price')
+                    ->sortable()
+                    ->numeric()
+                    ->toggleable()
+                    ->searchable(),
+                TextColumn::make('product.mainProduct.whole_price')
+                    ->label('W.Price')
+                    ->sortable()
+                    ->numeric()
+                    ->toggleable()
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -71,7 +93,8 @@ class VendorProductResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(auth()->user()->role == 'admin' || auth()->user()->role == 'superuser'),
                 ]),
             ]);
     }

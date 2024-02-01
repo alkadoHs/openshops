@@ -82,6 +82,16 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(VendorProduct::class);
     }
 
+    public function creditOrderPayments(): HasMany
+    {
+        return $this->hasMany(CreditOrderPayment::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function returnStocks(): HasMany
     {
         return $this->hasMany(ReturnStock::class);
@@ -90,5 +100,15 @@ class User extends Authenticatable implements FilamentUser
     public function branchTransfers(): HasMany
     {
         return $this->hasMany(BranchTransfer::class);
+    }
+
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function salaries(): HasMany
+    {
+        return $this->hasMany(Salary::class);
     }
 }

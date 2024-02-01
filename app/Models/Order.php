@@ -31,4 +31,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function creditOrders(): HasMany
+    {
+        return $this->hasMany(CreditOrder::class);
+    }
 }

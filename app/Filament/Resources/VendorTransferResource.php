@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\VendorProduct;
 use App\Models\VendorTransfer;
-use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -18,13 +17,16 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VendorTransferResource extends Resource
 {
     protected static ?string $model = VendorTransfer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string $title = 'Vendor Transfers';
+
+    protected static ?string $navigationGroup = "Transfers";
+
+    protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
 
     public static function form(Form $form): Form
     {
@@ -58,6 +60,11 @@ class VendorTransferResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                if(auth()->user()->role == 'vendor') {
+                    $query->where('user_id', auth()->user()->id)->where('status', 'pending');
+                }
+            })
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Vendor')
