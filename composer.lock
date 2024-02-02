@@ -74,16 +74,16 @@
         },
         {
             "name": "awcodes/filament-curator",
-            "version": "v3.4.6",
+            "version": "v3.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awcodes/filament-curator.git",
-                "reference": "66ae974bc9be8cf27fd688d3b92f459f0ceceffd"
+                "reference": "5b6cf2ca87027412570db5f8cafa5a22a41592cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awcodes/filament-curator/zipball/66ae974bc9be8cf27fd688d3b92f459f0ceceffd",
-                "reference": "66ae974bc9be8cf27fd688d3b92f459f0ceceffd",
+                "url": "https://api.github.com/repos/awcodes/filament-curator/zipball/5b6cf2ca87027412570db5f8cafa5a22a41592cc",
+                "reference": "5b6cf2ca87027412570db5f8cafa5a22a41592cc",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +143,7 @@
             ],
             "support": {
                 "issues": "https://github.com/awcodes/filament-curator/issues",
-                "source": "https://github.com/awcodes/filament-curator/tree/v3.4.6"
+                "source": "https://github.com/awcodes/filament-curator/tree/v3.4.8"
             },
             "funding": [
                 {
@@ -151,7 +151,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-10T17:18:51+00:00"
+            "time": "2024-01-31T18:36:56+00:00"
         },
         {
             "name": "awcodes/filament-gravatar",
