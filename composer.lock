@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fbd4d3c9b2c17fe35d203b9f273d3e5",
+    "content-hash": "12fbbc9c30b1bd05b9cd36d80cd08215",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2865,32 +2865,38 @@
         },
         {
             "name": "jeffgreco13/filament-breezy",
-            "version": "v2.2.1.1",
+            "version": "v2.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeffgreco13/filament-breezy.git",
-                "reference": "82abe61e778dbbd2e0c8081516336663a7dced2f"
+                "reference": "cf5f9d55121603bf24f9c3e137af46de9799b5ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeffgreco13/filament-breezy/zipball/82abe61e778dbbd2e0c8081516336663a7dced2f",
-                "reference": "82abe61e778dbbd2e0c8081516336663a7dced2f",
+                "url": "https://api.github.com/repos/jeffgreco13/filament-breezy/zipball/cf5f9d55121603bf24f9c3e137af46de9799b5ea",
+                "reference": "cf5f9d55121603bf24f9c3e137af46de9799b5ea",
                 "shasum": ""
             },
             "require": {
                 "bacon/bacon-qr-code": "^2.0",
                 "filament/filament": "^3.0.9",
+                "illuminate/contracts": "^10.0",
                 "php": "^8.1",
                 "pragmarx/google2fa": "^7.0|^8.0",
                 "spatie/laravel-package-tools": "^1.14.0"
             },
             "require-dev": {
+                "larastan/larastan": "^2.0.1",
                 "laravel/pint": "^1.0",
                 "nunomaduro/collision": "^7.9",
-                "orchestra/testbench": "^8.0",
-                "pestphp/pest": "^2.0",
+                "orchestra/testbench": "^8.8",
+                "pestphp/pest": "^2.20",
                 "pestphp/pest-plugin-arch": "^2.0",
                 "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
                 "spatie/laravel-ray": "^1.26"
             },
             "type": "library",
@@ -2906,8 +2912,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Jeffgreco13\\FilamentBreezy\\": "src/",
-                    "Jeffgreco13\\FilamentBreezy\\Database\\Factories\\": "database/factories/"
+                    "Jeffgreco13\\FilamentBreezy\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2930,9 +2935,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jeffgreco13/filament-breezy/issues",
-                "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.2.1.1"
+                "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.2.8"
             },
-            "time": "2023-12-05T16:20:52+00:00"
+            "time": "2024-01-31T15:37:01+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
