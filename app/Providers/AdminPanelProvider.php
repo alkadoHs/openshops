@@ -47,12 +47,13 @@ class AdminPanelProvider extends PanelProvider
                         hasAvatars: false
                     )
                     ->enableTwoFactorAuthentication(),
-                CuratorPlugin::make()
-                    ->label('Media')
-                    ->pluralLabel('Media Library')
-                    ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Media')
-                    ->navigationCountBadge(),
+                // CuratorPlugin::make()
+                //     ->label('Media')
+                //     ->pluralLabel('Media Library')
+                //     ->navigationIcon('heroicon-o-photo')
+                //     ->navigationGroup('Media')
+                //     ->navigationCountBadge()
+                    // ,
                 FilamentExceptionsPlugin::make(),
                 FilamentJobsMonitorPlugin::make()
                     ->navigationCountBadge()
@@ -72,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
                 'Settings',
             ])
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Indigo,
             ])
             ->viteTheme('resources/css/admin.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
