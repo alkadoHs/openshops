@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('/')
             ->login(Login::class)
             ->profile()
             ->spa()
@@ -69,7 +69,6 @@ class AdminPanelProvider extends PanelProvider
                 'Transfers',
                 'Stocks',
                 'Collections',
-                'Media',
                 'Settings',
             ])
             ->colors([
