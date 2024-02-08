@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
+use App\Filament\Resources\OrderResource\Widgets\UserSaleStats;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\VendorProduct;
@@ -30,7 +31,7 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
-     public static function form(Form $form): Form
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -291,6 +292,21 @@ class OrderResource extends Resource
         ];
     }
 
+
+    public static function getWidgets(): array
+    {
+        return [
+            UserSaleStats::class,
+        ];
+    }
+
+    // public function getHeaderWidgets(): array
+    // {
+    //     return [
+    //         UserSaleStats::class,
+    //     ];
+    // }
+
     public static function getPages(): array
     {
         return [
@@ -300,4 +316,5 @@ class OrderResource extends Resource
             'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
+
 }
