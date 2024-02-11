@@ -30,7 +30,7 @@ class UserSaleStats extends BaseWidget
         $todayCreditPayments = CreditOrderPayment::where('user_id', auth()->id())->whereDate('created_at', today())->sum('amount');
         return [
             Stat::make('Total Sales', number_format($todayUserOrders))
-                ->description("NET - " . number_format($todayUserOrders - $userExpenses))
+                ->description("NET: " . number_format($todayUserOrders - $userExpenses))
                 ->color('success'),
             Stat::make('Total Expenses', number_format($userExpenses)),
             Stat::make('Total Credit Payments', number_format($todayCreditPayments)),
