@@ -16,4 +16,9 @@ class WelcomeSeller extends BaseWidget
                 ->color('success')
         ];
     }
+
+    protected function canView(): bool
+    {
+        return auth()->user()->role != 'admin';
+    }
 }
