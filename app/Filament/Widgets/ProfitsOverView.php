@@ -46,4 +46,9 @@ class ProfitsOverView extends BaseWidget
             Stat::make('Monthly Salaries', number_format($monthlySalaries))
         ];
     }
+
+    public static function canView(): bool
+    {
+        return auth()->user()->role == 'admin' || auth()->user()->role == 'superuser';
+    }
 }

@@ -9,7 +9,7 @@ class BranchSalesChart extends ChartWidget
 {
     protected static ?string $heading = 'Monthly Sales/Branch';
 
-    protected static ?int $sort = 7;
+    protected static ?int $sort = 8;
 
     protected function getData(): array
     {
@@ -34,5 +34,10 @@ class BranchSalesChart extends ChartWidget
     protected function getType(): string
     {
         return 'bar';
+    }
+
+    public static function canView(): bool
+    {
+        return auth()->user()->role == 'admin' || auth()->user()->role == 'superuser';
     }
 }

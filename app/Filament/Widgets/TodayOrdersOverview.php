@@ -53,4 +53,9 @@ class TodayOrdersOverview extends BaseWidget
                 ->chart([120000, 1300000, 900000, 3000000, 200000, 780000, 5000000]),
         ];
     }
+
+    public static function canView(): bool
+    {
+        return auth()->user()->role == 'admin' || auth()->user()->role == 'superuser';
+    }
 }

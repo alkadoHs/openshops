@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Branch;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -180,9 +181,9 @@ class ProductResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('branch')
-                    ->relationship('branch', 'name')
-                    ->searchable()
-                    ->preload()
+                    ->options(
+                        Branch::all()->pluck('name', 'id')
+                    )
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

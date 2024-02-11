@@ -8,24 +8,24 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
-class UserSales extends BaseWidget
+class MonthlyUserSales extends BaseWidget
 {
     protected int | string | array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Today User Sales';
+    protected static ?string $heading = 'Monthly User Sales';
 
-    protected static ?int $sort = 6;
-
+    protected static ?int $sort = 7;
+    
     public function table(Table $table): Table
     {
         return $table
             ->query(
             User::with(['orders' => function (Builder $query) {
-                return $query->where('created_at', '>=', today());
+                return $query->whereMonth('created_at', today());
             }, 'expenses.expenseItems' => function (Builder $query) {
-                return $query->where('created_at', '>=', today());
+                return $query->whereMonth('created_at', today());
             }, 'creditOrderPayments' => function (Builder $query) {
-                return $query->where('created_at', '>=', today());
+                return $query->whereMonth('created_at', today());
             }])
             )
             ->columns([
@@ -56,3 +56,4 @@ class UserSales extends BaseWidget
         return auth()->user()->role == 'admin' || auth()->user()->role == 'superuser';
     }
 }
+

@@ -168,7 +168,14 @@ class OrderResource extends Resource
                             ->columns(5)
                             ->collapsible()
                             ->addActionLabel('Add Item')
-                            ->itemLabel(fn (array $state): ?string => Product::find($state['product_id'])->mainProduct->name ?? null),
+                            ->itemLabel(function (array $state) {
+                                if(auth()->user()->role === "vendor") {
+                                    $Item = VendorProduct::with('product.mainProduct')->where('id',$state['product_id'])->first();
+                                    return $Item ? $Item->product->mainProduct->name?? null : null;
+                                }
+                                $item = Product::with('mainProduct')->where('id', $state['product_id'])->first();
+                                return $item ? $item->mainProduct->name ?? null : null;
+                            })
                     ]),
 
 
