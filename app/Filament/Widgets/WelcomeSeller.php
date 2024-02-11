@@ -17,7 +17,7 @@ class WelcomeSeller extends BaseWidget
         ];
     }
 
-    protected function canView(): bool
+    public static function canView(): bool
     {
         return auth()->user()->role != 'admin';
     }
