@@ -110,7 +110,7 @@ class OrderResource extends Resource
                                                                 ->where('stock', '!=', 0)
                                                                 ->with('product.mainProduct')
                                                                 ->get()
-                                                                ->pluck('product.mainProduct.name', 'product_id');
+                                                                ->pluck('product.mainProduct.name', 'id');
                                             }
                                             return Product::where('branch_id', auth()->user()->branch_id)
                                                                      ->where('stock', '!=', 0)
@@ -134,7 +134,7 @@ class OrderResource extends Resource
                                         'W' => 'Whole',
                                     ])
                                     ->native(false)
-                                    ->live()
+                                    ->reactive()
                                     ->afterStateUpdated( fn (Get $get, Set $set, ?string $state): int
                                         => $set('price', $state == 'R' ? Product::find($get('product_id'))->mainProduct?->retail_price?? 0 : 
                                                                         Product::find($get('product_id'))->mainProduct?->whole_price?? 0)
@@ -150,7 +150,7 @@ class OrderResource extends Resource
                                 Forms\Components\TextInput::make('price')
                                     ->label('Unit Price')
                                     ->disabled()
-                                    ->live()
+                                    ->reactive()
                                     ->dehydrated()
                                     ->numeric(),
                 
@@ -262,6 +262,22 @@ class OrderResource extends Resource
     public static function updateTotals(Get $get, Set $set): void
     {
         $selectedProducts = collect($get('orderItems'))->filter(fn($item) => !empty($item['product_id'] && !empty($item['quantity'])));
+
+        if(auth()->user()->role == 'vendor') {
+            foreach ($selectedProducts as $selectedProduct) {
+            $product = VendorProduct::find($selectedProduct['product_id']);
+
+            if($product->stock < $selectedProduct['quantity']) {
+                Notification::make()
+                    ->title('Stock is not enough!')
+                    ->body("Your stock is $product->stock, update the quantity according to your stock balance")
+                    ->danger()
+                    ->color('danger')
+                    ->send();
+                return;
+            }
+        } 
+        }
 
         foreach ($selectedProducts as $selectedProduct) {
             $product = Product::find($selectedProduct['product_id']);
