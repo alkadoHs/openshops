@@ -87,6 +87,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password_confirmation')
                     ->label('Confirm password')
                     ->password()
+                    ->dehydrated(false)
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->maxLength(255),
             ]);
