@@ -53,4 +53,5 @@ class Product extends Model
     {
         return $this->hasMany(BranchTransfer::class);
     }
+
 }

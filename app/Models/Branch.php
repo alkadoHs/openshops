@@ -43,4 +43,9 @@ class Branch extends Model
         return $this->hasMany(BranchTransfer::class);
     }
 
+    public function newStocks(): HasMany
+    {
+        return $this->hasMany(NewStock::class);
+    }
+
 }

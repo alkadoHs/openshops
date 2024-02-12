@@ -29,4 +29,9 @@ class MainProduct extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function newStocks(): HasMany
+    {
+        return $this->hasMany(NewStock::class);
+    }
+
 }

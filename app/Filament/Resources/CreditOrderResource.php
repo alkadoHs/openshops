@@ -41,9 +41,10 @@ class CreditOrderResource extends Resource
                     ->label('Customer')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('order.paid')
+                Tables\Columns\TextColumn::make('paid')
                     ->label('Amount paid')
                     ->numeric()
+                    ->state(fn (CreditOrder $creditOrder) => $creditOrder->order->paid + $creditOrder->creditOrderPayments()->get()->reduce(fn ($total, $payment) => $total + $payment->amount, 0))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_credit')
                     ->label('Total credit')

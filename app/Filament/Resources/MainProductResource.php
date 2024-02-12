@@ -19,6 +19,8 @@ class MainProductResource extends Resource
 
     protected static string $title = 'Main Products';
 
+    protected static ?int $navigtationSort = 2;
+
     protected static ?string $navigationGroup = "Stocks";
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
