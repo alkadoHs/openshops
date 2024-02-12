@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12fbbc9c30b1bd05b9cd36d80cd08215",
+    "content-hash": "517d39d2ead8197352c4345f3fb400a0",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2865,16 +2865,16 @@
         },
         {
             "name": "jeffgreco13/filament-breezy",
-            "version": "v2.2.8",
+            "version": "v2.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeffgreco13/filament-breezy.git",
-                "reference": "cf5f9d55121603bf24f9c3e137af46de9799b5ea"
+                "reference": "94a4a4d2e2efc75998c881963aa321f1b4e26275"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeffgreco13/filament-breezy/zipball/cf5f9d55121603bf24f9c3e137af46de9799b5ea",
-                "reference": "cf5f9d55121603bf24f9c3e137af46de9799b5ea",
+                "url": "https://api.github.com/repos/jeffgreco13/filament-breezy/zipball/94a4a4d2e2efc75998c881963aa321f1b4e26275",
+                "reference": "94a4a4d2e2efc75998c881963aa321f1b4e26275",
                 "shasum": ""
             },
             "require": {
@@ -2935,9 +2935,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jeffgreco13/filament-breezy/issues",
-                "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.2.8"
+                "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.2.9"
             },
-            "time": "2024-01-31T15:37:01+00:00"
+            "time": "2024-02-11T00:00:51+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
