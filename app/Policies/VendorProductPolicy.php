@@ -16,4 +16,9 @@ class VendorProductPolicy
         return $user->role == 'vendor' || $user->role == 'admin' || $user->role == 'superuser';
     }
 
+    public function view(User $user, VendorProduct $vendorProduct): bool
+    {
+        return $user->id == $vendorProduct->user_id || $user->role == 'admin' || $user->role == 'superuser';;
+    }
+
    }
