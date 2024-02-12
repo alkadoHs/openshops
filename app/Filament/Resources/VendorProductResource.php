@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,8 +39,9 @@ class VendorProductResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 if(auth()->user()->role == 'vendor') {
-                    $query->where('user_id', auth()->user()->id);
+                    $query->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc');
                 }
+                $query->orderBy('created_at', 'desc');
             })
             ->columns([
                 TextColumn::make('user.name')
@@ -53,6 +55,9 @@ class VendorProductResource extends Resource
                     ->searchable(),
                 TextColumn::make('stock')
                     ->sortable()
+                    ->summarize(
+                        Sum::make()->label('Total Stock')
+                    )
                     ->numeric(),
                 TextColumn::make('product.mainProduct.retail_price')
                     ->label('R.Price')
