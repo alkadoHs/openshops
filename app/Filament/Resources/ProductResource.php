@@ -127,7 +127,6 @@ class ProductResource extends Resource
                     ]),
                 Tables\Columns\TextColumn::make('value')
                     ->label('Value')
-                    ->sortable()
                     ->numeric()
                     ->toggleable()
                     ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
@@ -136,7 +135,6 @@ class ProductResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('Retail Revenue')
                     ->label('R.Revenue')
-                    ->sortable()
                     ->numeric()
                     ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -145,7 +143,6 @@ class ProductResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('Whole Revenue')
                     ->label('W.Revenue')
-                    ->sortable()
                     ->numeric()
                     ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -154,7 +151,6 @@ class ProductResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('R Profit')
                     ->label('R.Profit')
-                    ->sortable()
                     ->numeric()
                     ->toggleable()
                     ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
@@ -163,7 +159,6 @@ class ProductResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('W Profit')
                     ->label('W.Profit')
-                    ->sortable()
                     ->numeric()
                     ->toggleable()
                     ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser")
@@ -172,11 +167,9 @@ class ProductResource extends Resource
                     }),
                     Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
