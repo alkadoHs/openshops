@@ -67,7 +67,10 @@ class BranchTransferResource extends Resource
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 if(auth()->user()->role != 'admin') {
-                    return $query->with('fromBranch', 'toBranch', 'receiver', 'product.mainProduct')->orderBy('updated_at', 'desc');
+                    return $query->with('fromBranch', 'toBranch', 'receiver', 'product.mainProduct')
+                                      ->where('from_branch_id', auth()->user()->branch_id)
+                                      ->orWhere('to_branch_id', auth()->user()->branch_id)
+                                      ->orderBy('updated_at', 'desc');
                 }
                 return $query->with('fromBranch', 'toBranch', 'receiver', 'product.mainProduct')->orderBy('updated_at', 'desc');
             })
