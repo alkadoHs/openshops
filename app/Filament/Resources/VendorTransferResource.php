@@ -138,7 +138,7 @@ class VendorTransferResource extends Resource
                 Tables\Filters\SelectFilter::make('user_id')
                     ->options(User::where('role', 'vendor')->get()->pluck('name', 'id'))
                     ->native(false)
-                    ->visible(fn () => auth()->user()->role == 'admin')
+                    ->visible(fn () => auth()->user()->role == 'admin' || auth()->user()->role == 'superuser' || auth()->user()->role == 'seller')
                     ->native(false)
                     ->label('Vendor'),
                 Tables\Filters\SelectFilter::make('branch_id')
