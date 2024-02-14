@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -65,6 +66,13 @@ class VendorTransferResource extends Resource
                     $query->where('user_id', auth()->user()->id)->where('status', 'pending');
                 }
             })
+            ->groups([
+                Group::make('updated_at')
+                    ->label('Day')
+                    ->date(),
+                Group::make('status')
+            ])
+            ->defaultGroup('updated_at')
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Vendor')

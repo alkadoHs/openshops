@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -57,6 +58,19 @@ class BranchTransferResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultGroup('updated_at')
+            ->groups([
+                Group::make('updated_at')
+                    ->label('Day')
+                    ->date(),
+                Group::make('status')
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                if(auth()->user()->role != 'admin') {
+                    return $query->orderBy('updated_at', 'desc');
+                }
+                return $query->orderBy('updated_at', 'desc');
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('fromBranch.name')
                     ->sortable(),
