@@ -59,7 +59,6 @@ class BranchTransferResource extends Resource
     {
         return $table
             ->defaultGroup('updated_at')
-            ->defaultSort('updated_at', 'desc')
             ->groups([
                 Group::make('updated_at')
                     ->label('Day')
@@ -68,9 +67,9 @@ class BranchTransferResource extends Resource
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 if(auth()->user()->role != 'admin') {
-                    return $query;
+                    return $query->orderBy('updated_at', 'desc');
                 }
-                return $query;
+                return $query->orderBy('updated_at', 'desc');
             })
             ->columns([
                 Tables\Columns\TextColumn::make('fromBranch.name')
