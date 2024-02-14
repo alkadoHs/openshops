@@ -23,8 +23,7 @@ class ListBranchTransfers extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make()
-                ->badge(BranchTransfer::query()->count()),
+            'all' => Tab::make(),
             'new_stock' => Tab::make('NewStock')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('to_branch_id', auth()->user()->branch_id)->where('status', 'pending'))
                 ->badge(BranchTransfer::query()->where('to_branch_id', auth()->user()->branch_id)->where('status', 'pending')->count())
