@@ -75,7 +75,6 @@ class VendorTransferResource extends Resource
                     ->date(),
                 Group::make('status')
             ])
-            ->defaultSort('updated_at', 'desc')
             ->defaultGroup('updated_at')
             ->columns([
                 TextColumn::make('branch.name')
