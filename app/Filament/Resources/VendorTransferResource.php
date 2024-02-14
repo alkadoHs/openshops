@@ -65,6 +65,8 @@ class VendorTransferResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 if(auth()->user()->role == 'vendor') {
                     $query->where('user_id', auth()->user()->id)->where('status', 'pending');
+                } elseif(auth()->user()->role == 'seller') {
+                    $query->where('branch_id', auth()->user()->branch_id);
                 }
             })
             ->groups([
