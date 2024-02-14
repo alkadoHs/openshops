@@ -25,11 +25,11 @@ class ListBranchTransfers extends ListRecords
         return [
             'all' => Tab::make()
                 ->badge(BranchTransfer::query()->count()),
-            'new_stock' => Tab::make('New stock')
+            'new_stock' => Tab::make('NewStock')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('to_branch_id', auth()->user()->branch_id)->where('status', 'pending'))
                 ->badge(BranchTransfer::query()->where('to_branch_id', auth()->user()->branch_id)->where('status', 'pending')->count())
                 ->badgeColor('success'),
-            'sent_stock' => Tab::make('Sent stock')
+            'sent_stock' => Tab::make('SentStock')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('from_branch_id', auth()->user()->branch_id)->where('status', 'pending'))
                 ->badge(BranchTransfer::query()->where('from_branch_id', auth()->user()->branch_id)->where('status', 'pending')->count())
                 ->badgeColor('warning'),
