@@ -92,7 +92,7 @@ class BranchTransferResource extends Resource
                     ])
                     ->disableOptionWhen(
                         //disable pending users found to from branch and approved or rejected users found to to branch
-                        fn ($record) => $record->from_branch_id == auth()->user()->branch_id && $record->status != 'pending'
+                        fn (BranchTransfer $record) => ($record->from_branch_id == auth()->user()->branch_id && $record->status != 'pending') || ($record->to_branch_id == auth()->user()->branch_id && $record->status != 'pending')
                         
 
                         // } $value == 'pending' || (($value == 'rejected' || $value == 'approved') && auth()->user()->role != 'vendor')
