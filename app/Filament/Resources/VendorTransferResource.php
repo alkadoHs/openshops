@@ -120,7 +120,19 @@ class VendorTransferResource extends Resource
                     })
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected'
+                    ])
+                    ->label('Status')
+                    ->default('pending'),
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->options(User::where('role', 'vendor')->get()->pluck('name', 'id'))
+                    ->native(false)
+                    ->visible(fn () => auth()->user()->role == 'admin')
+                    ->label('Vendor'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

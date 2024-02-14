@@ -63,7 +63,7 @@ class BranchTransferResource extends Resource
                 Group::make('updated_at')
                     ->label('Day')
                     ->date(),
-                Group::make('status')
+                Group::make('status'),
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 if(auth()->user()->role != 'admin') {
@@ -137,7 +137,23 @@ class BranchTransferResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected'
+                    ])
+                    ->label('Status'),
+                Tables\Filters\SelectFilter::make('from_branch_id')
+                    ->options(
+                        Branch::get()->pluck('name', 'id')
+                    )
+                    ->label('From Branch'),
+                Tables\Filters\SelectFilter::make('to_branch_id')
+                    ->options(
+                        Branch::get()->pluck('name', 'id')
+                    )
+                    ->label('To Branch'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
