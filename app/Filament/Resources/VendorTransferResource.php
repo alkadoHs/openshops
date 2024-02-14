@@ -131,11 +131,13 @@ class VendorTransferResource extends Resource
                         'approved' => 'Approved',
                         'rejected' => 'Rejected'
                     ])
+                    ->native(false)
                     ->label('Status'),
                 Tables\Filters\SelectFilter::make('user_id')
                     ->options(User::where('role', 'vendor')->get()->pluck('name', 'id'))
                     ->native(false)
                     ->visible(fn () => auth()->user()->role == 'admin')
+                    ->native(false)
                     ->label('Vendor'),
                 Tables\Filters\SelectFilter::make('branch_id')
                     ->options(

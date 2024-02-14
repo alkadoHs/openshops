@@ -143,16 +143,19 @@ class BranchTransferResource extends Resource
                         'approved' => 'Approved',
                         'rejected' => 'Rejected'
                     ])
+                    ->native(false)
                     ->label('Status'),
                 Tables\Filters\SelectFilter::make('from_branch_id')
                     ->options(
                         Branch::get()->pluck('name', 'id')
                     )
+                    ->native(false)
                     ->label('From Branch'),
                 Tables\Filters\SelectFilter::make('to_branch_id')
                     ->options(
                         Branch::get()->pluck('name', 'id')
                     )
+                    ->native(false)
                     ->label('To Branch'),
             ])
             ->actions([
