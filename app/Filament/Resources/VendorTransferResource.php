@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\VendorTransferResource\Pages;
 use App\Filament\Resources\VendorTransferResource\RelationManagers;
+use App\Models\Branch;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\VendorProduct;
@@ -74,12 +75,16 @@ class VendorTransferResource extends Resource
             ])
             ->defaultGroup('updated_at')
             ->columns([
+                TextColumn::make('branch.name')
+                    ->label('From Branch')
+                    ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Vendor')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('product.mainProduct.name')
                     ->label('Product')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('stock'),
                 SelectColumn::make('status')
@@ -126,13 +131,18 @@ class VendorTransferResource extends Resource
                         'approved' => 'Approved',
                         'rejected' => 'Rejected'
                     ])
-                    ->label('Status')
-                    ->default('pending'),
+                    ->label('Status'),
                 Tables\Filters\SelectFilter::make('user_id')
                     ->options(User::where('role', 'vendor')->get()->pluck('name', 'id'))
                     ->native(false)
                     ->visible(fn () => auth()->user()->role == 'admin')
                     ->label('Vendor'),
+                Tables\Filters\SelectFilter::make('branch_id')
+                    ->options(
+                        Branch::get()->pluck('name', 'id')
+                    )
+                    ->native(false)
+                    ->label('From Branch'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
