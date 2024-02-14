@@ -140,7 +140,8 @@ class VendorTransferResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->role == 'admin' || auth()->user()->role == 'superuser'),
                 ]),
             ]);
     }

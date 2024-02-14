@@ -157,10 +157,12 @@ class BranchTransferResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->role == 'admin' || auth()->user()->role == 'superuser'),
                 ]),
             ]);
     }
