@@ -64,10 +64,11 @@ class VendorTransferResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 if(auth()->user()->role == 'vendor') {
-                    $query->where('user_id', auth()->user()->id)->where('status', 'pending')->orderBy('updated_at', 'desc');
+                    $query->with('branch', 'user', 'product.mainProduct')->where('user_id', auth()->user()->id)->where('status', 'pending')->orderBy('updated_at', 'desc');
                 } elseif(auth()->user()->role == 'seller') {
-                    $query->where('branch_id', auth()->user()->branch_id)->orderBy('updated_at', 'desc');
+                    $query->with('branch', 'user', 'product.mainProduct')->where('branch_id', auth()->user()->branch_id)->orderBy('updated_at', 'desc');
                 }
+                $query->with('branch', 'user', 'product.mainProduct')->orderBy('updated_at', 'desc');
             })
             ->groups([
                 Group::make('updated_at')
@@ -149,8 +150,10 @@ class VendorTransferResource extends Resource
                     ->label('From Branch'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn (VendorTransfer $record) => $record->status == 'pending' && (auth()->user()->role == 'admin' || auth()->user()->role == 'superuser' || auth()->user()->branch_id == $record->branch_id)),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn (VendorTransfer $record) => $record->status == 'pending' && (auth()->user()->role == 'admin' || auth()->user()->role == 'superuser' || auth()->user()->branch_id == $record->branch_id)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

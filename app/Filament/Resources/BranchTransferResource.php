@@ -67,9 +67,9 @@ class BranchTransferResource extends Resource
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 if(auth()->user()->role != 'admin') {
-                    return $query->orderBy('updated_at', 'desc');
+                    return $query->with('fromBranch', 'toBranch', 'receiver', 'product.mainProduct')->orderBy('updated_at', 'desc');
                 }
-                return $query->orderBy('updated_at', 'desc');
+                return $query->with('fromBranch', 'toBranch', 'receiver', 'product.mainProduct')->orderBy('updated_at', 'desc');
             })
             ->columns([
                 Tables\Columns\TextColumn::make('fromBranch.name')
@@ -159,8 +159,10 @@ class BranchTransferResource extends Resource
                     ->label('To Branch'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                   ->visible(fn (BranchTransfer $record) => $record->status == 'pending' && (auth()->user()->role == 'admin' || auth()->user()->role == 'superuser' || auth()->user()->branch_id == $record->from_branch_id)),
                 Tables\Actions\DeleteAction::make()
+                    ->visible(fn (BranchTransfer $record) => $record->status == 'pending' && (auth()->user()->role == 'admin' || auth()->user()->role == 'superuser' || auth()->user()->branch_id == $record->from_branch_id)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
