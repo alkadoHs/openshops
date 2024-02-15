@@ -64,10 +64,10 @@ class OrderResource extends Resource
                                  function (array $data) {
                                     if(auth()->user()->role == 'vendor') {
                                         //decrement vendors stock
-                                        $product = VendorProduct::where('product_id', $data['product_id'])
+                                        $product = VendorProduct::where('id', $data['product_id'])
                                                                     ->where('user_id', auth()->user()->id)->first();
 
-                                        if($product->stock < $data['quantity']) {
+                                        if($product && $product->stock < $data['quantity']) {
                                             Notification::make()
                                                 ->title('Order creation failed!')
                                                 ->body(" {$product->mainProduct->name} stock available is $product->stock, you can sell only the stock available")
