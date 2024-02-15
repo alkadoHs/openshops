@@ -619,16 +619,16 @@
         },
         {
             "name": "croustibat/filament-jobs-monitor",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/croustibat/filament-jobs-monitor.git",
-                "reference": "f9e56ca15e0e8675d370f732dbc4ed8f98637370"
+                "reference": "05faa0d853da81f85cc972440db8499bc82313b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/croustibat/filament-jobs-monitor/zipball/f9e56ca15e0e8675d370f732dbc4ed8f98637370",
-                "reference": "f9e56ca15e0e8675d370f732dbc4ed8f98637370",
+                "url": "https://api.github.com/repos/croustibat/filament-jobs-monitor/zipball/05faa0d853da81f85cc972440db8499bc82313b4",
+                "reference": "05faa0d853da81f85cc972440db8499bc82313b4",
                 "shasum": ""
             },
             "require": {
@@ -677,7 +677,7 @@
             ],
             "support": {
                 "issues": "https://github.com/croustibat/filament-jobs-monitor/issues",
-                "source": "https://github.com/croustibat/filament-jobs-monitor/tree/2.1.0"
+                "source": "https://github.com/croustibat/filament-jobs-monitor/tree/2.2.0"
             },
             "funding": [
                 {
@@ -685,7 +685,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-07T23:06:57+00:00"
+            "time": "2024-02-15T11:02:56+00:00"
         },
         {
             "name": "danharrin/date-format-converter",
@@ -1083,16 +1083,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.8.1",
+            "version": "3.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "c9ea252cdce4da324ede3d6c5913dd89f769afd2"
+                "reference": "a19a1d05ca211f41089dffcc387733a6875196cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c9ea252cdce4da324ede3d6c5913dd89f769afd2",
-                "reference": "c9ea252cdce4da324ede3d6c5913dd89f769afd2",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/a19a1d05ca211f41089dffcc387733a6875196cb",
+                "reference": "a19a1d05ca211f41089dffcc387733a6875196cb",
                 "shasum": ""
             },
             "require": {
@@ -1176,7 +1176,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.8.1"
+                "source": "https://github.com/doctrine/dbal/tree/3.8.2"
             },
             "funding": [
                 {
@@ -1192,7 +1192,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-03T17:33:49+00:00"
+            "time": "2024-02-12T18:36:36+00:00"
         },
         {
             "name": "doctrine/deprecations",
