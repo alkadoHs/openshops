@@ -140,7 +140,7 @@ class OrderResource extends Resource
                                             return $set('price', $state == 'R' ? VendorProduct::with('product.mainProduct')->where('id',$get('product_id'))->first()->product->mainProduct?->retail_price?? 0 : 
                                                                     VendorProduct::with('product.mainProduct')->where('id', $get('product_id'))->first()->product->mainProduct?->whole_price?? 0);
 
-                                        return $set('price', $state == 'R' ? Product::find($get('product_id'))->mainProduct?->retail_price?? 0 : 
+                                        return $set('price', $state == 'R' ? Product::with('mainProduct')->where('id',$get('product_id'))->first()->mainProduct?->retail_price?? 0 : 
                                                                 Product::find($get('product_id'))->mainProduct?->whole_price?? 0);
                                     })
                                     ->required(),
