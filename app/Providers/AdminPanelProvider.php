@@ -53,11 +53,12 @@ class AdminPanelProvider extends PanelProvider
                 //     ->navigationIcon('heroicon-o-photo')
                 //     ->navigationGroup('Media')
                 //     ->navigationCountBadge()
-                    // ,
+                //     ,
                 FilamentExceptionsPlugin::make(),
                 FilamentJobsMonitorPlugin::make()
                     ->navigationCountBadge()
-                    ->navigationGroup('Settings'),
+                    ->navigationGroup('Settings')
+                    ->enableNavigation(\Auth::check() && auth()?->user()?->role === "admin" ?? false),
                 FilamentPeekPlugin::make()
                     ->disablePluginStyles(),
                 GravatarPlugin::make(),

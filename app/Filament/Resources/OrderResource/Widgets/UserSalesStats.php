@@ -16,6 +16,8 @@ class UserSaleStats extends BaseWidget
 
     protected static ?string $pollingInterval = null;
 
+    // protected static ?string $tableColumnSearches = [];
+
     protected function getTablePage(): string
     {
         return ListOrders::class;
@@ -36,4 +38,6 @@ class UserSaleStats extends BaseWidget
             Stat::make('Total Credit Payments', number_format($todayCreditPayments)),
         ];
     }
+
+
 }

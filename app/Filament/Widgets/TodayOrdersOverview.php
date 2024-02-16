@@ -20,7 +20,7 @@ class TodayOrdersOverview extends BaseWidget
 
         $totalCreditOrderAmount = 0;
 
-        $CreditOrders = CreditOrder::with('order.orderItems')->get();
+        $CreditOrders = CreditOrder::with(['order.orderItems', 'creditOrderPayments'])->get();
         // reduce(function ($totalCredit, $creditOrder) {
         //     $totalPrice = $creditOrder->order->orderItems()->sum('price');
         //     return $totalCredit + ($totalPrice - $creditOrder->order->paid);
@@ -28,7 +28,7 @@ class TodayOrdersOverview extends BaseWidget
 
         foreach ($CreditOrders as $creditOrder) {
             $total = $creditOrder->order->orderItems()->get()->reduce(fn ($totalAll , $item) => ($item->price * $item->quantity) + $totalAll);
-            $totalCreditOrderAmount += (($total) - $creditOrder->order->paid);
+            $totalCreditOrderAmount += (($total) - $creditOrder->order->paid - $creditOrder->creditOrderPayments()->sum('amount'));
         }
 
         return [
