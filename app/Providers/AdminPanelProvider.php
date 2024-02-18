@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('/')
             ->login(Login::class)
             ->profile()
-            // ->spa()
+            ->spa()
             ->databaseNotifications()
             ->plugins([
                 BreezyCore::make()
@@ -54,11 +54,11 @@ class AdminPanelProvider extends PanelProvider
                 //     ->navigationGroup('Media')
                 //     ->navigationCountBadge()
                 //     ,
-                FilamentExceptionsPlugin::make(),
-                FilamentJobsMonitorPlugin::make()
-                    ->navigationCountBadge()
-                    ->navigationGroup('Settings')
-                    ->enableNavigation(\Auth::check() && auth()?->user()?->role === "admin" ?? false),
+                // FilamentExceptionsPlugin::make(),
+                // FilamentJobsMonitorPlugin::make()
+                //     ->navigationCountBadge()
+                //     ->navigationGroup('Settings')
+                //     ->enableNavigation(\Auth::check() && auth()?->user()?->role === "admin" ?? false),
                 FilamentPeekPlugin::make()
                     ->disablePluginStyles(),
                 GravatarPlugin::make(),
