@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('/')
             ->login(Login::class)
             ->profile()
-            ->spa()
+            // ->spa()
             ->databaseNotifications()
             ->plugins([
                 BreezyCore::make()
