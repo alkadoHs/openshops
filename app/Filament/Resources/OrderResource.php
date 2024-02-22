@@ -247,8 +247,7 @@ class OrderResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
@@ -287,7 +286,7 @@ class OrderResource extends Resource
                 return;
             }
         } 
-        }
+    }
 
         foreach ($selectedProducts as $selectedProduct) {
             $product = Product::find($selectedProduct['product_id']);

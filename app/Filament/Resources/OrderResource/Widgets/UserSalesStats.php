@@ -25,7 +25,7 @@ class UserSaleStats extends BaseWidget
     
     protected function getStats(): array
     {
-        $todayUserOrders = Order::where('user_id', auth()->id())->whereDate('created_at', today())->get()->sum('paid');
+        $todayUserOrders = $this->getPageTableQuery()->where('user_id', auth()->id())->whereDate('created_at', today())->get()->sum('paid');
         $userExpenses = Expense::where('user_id', auth()->id())->whereDate('created_at', today())->with('expenseItems')->get()->sum(function($expense) {
             return $expense->expenseItems->sum('cost');
         });
