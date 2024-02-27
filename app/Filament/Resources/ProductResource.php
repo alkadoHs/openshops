@@ -91,7 +91,6 @@ class ProductResource extends Resource
                     ->sortable()
                     ->visible(auth()->user()->role == "admin" || auth()->user()->role == "superuser"),
                 Tables\Columns\TextColumn::make('stock')
-                    ->numeric()
                     ->sortable()
                     ->toggleable()
                     ->summarize([

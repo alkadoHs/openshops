@@ -54,11 +54,9 @@ class OrderResource extends Resource
                     ])
                     ->columnSpan(['lg' => fn (?Order $record) => $record === null ? 3 : 2]),
 
-                    Forms\Components\Section::make()
-                    ->columns(1)
-                    ->schema([
                         Forms\Components\Repeater::make('orderItems')
                             ->relationship()
+                            ->columnSpanFull()
                             ->mutateRelationshipDataBeforeCreateUsing(
                                  function (array $data) {
                                     if(auth()->user()->role == 'vendor') {
@@ -178,8 +176,7 @@ class OrderResource extends Resource
                                 }
                                 $item = Product::with('mainProduct')->where('id', $state['product_id'])->first();
                                 return $item ? $item->mainProduct->name ?? null : null;
-                            })
-                    ]),
+                            }),
 
 
                     Forms\Components\Section::make()
