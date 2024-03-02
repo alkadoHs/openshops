@@ -36,6 +36,12 @@ class CreditOrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                if(auth()->user()->role == 'admin')
+                    return $query->orderBy('updated_at', 'desc');
+                else
+                   return $query->whereRelation('order', 'user_id', '=', auth()->user()->id);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('order.customer.name')
                     ->label('Customer')
