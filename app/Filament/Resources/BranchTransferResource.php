@@ -66,7 +66,10 @@ class BranchTransferResource extends Resource
                 Group::make('status'),
             ])
             ->modifyQueryUsing(function (Builder $query) {
-                return $query->with('fromBranch', 'toBranch', 'receiver', 'product.mainProduct')->orderBy('updated_at', 'desc');
+                if(auth()->user()->role == 'admin')
+                    return $query->orderBy('updated_at', 'desc');
+                else
+                   return $query->where('to_branch_id', auth()->user()->branch_id)->orWhere('from_branch_id', auth()->user()->branch_id)->orderBy('created_at', 'desc');
             })
             ->columns([
                 Tables\Columns\TextColumn::make('fromBranch.name')
