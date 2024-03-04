@@ -54,7 +54,7 @@ class AdminPanelProvider extends PanelProvider
                 //     ->navigationGroup('Media')
                 //     ->navigationCountBadge()
                 //     ,
-                // FilamentExceptionsPlugin::make(),
+                 FilamentExceptionsPlugin::make(),
                 // FilamentJobsMonitorPlugin::make()
                 //     ->navigationCountBadge()
                 //     ->navigationGroup('Settings')
