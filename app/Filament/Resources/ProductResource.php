@@ -81,7 +81,7 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => auth()->user()->role == 'admin' || auth()->user()->role == 'superuser' ? $query->orderBy('created_at', 'desc') : $query->where('branch_id', auth()->user()->branch_id)->orderBy('created_at', 'desc'))
+            ->modifyQueryUsing(fn (Builder $query) => auth()->user()->role == 'admin' || auth()->user()->role == 'seller' ? $query->orderBy('created_at', 'desc') : $query->where('branch_id', auth()->user()->branch_id)->orderBy('created_at', 'desc'))
             ->columns([
                 Tables\Columns\TextColumn::make('mainProduct.name')
                     ->label('Product')
