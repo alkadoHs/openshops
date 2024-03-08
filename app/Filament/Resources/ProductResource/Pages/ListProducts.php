@@ -24,24 +24,24 @@ class ListProducts extends ListRecords
     {
         return [
             'all' => Tab::make()
-                ->badge(Product::query()->count()),
+                ->badge(auth()->user()->role == 'admin' ? Product::query()->count() : Product::query()->where('branch_id', auth()->user()->branch_id)->count()),
             'in_stock' => Tab::make('InStock')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereColumn('stock', '>', 'stock_limit'))
-                ->badge(Product::query()->whereColumn('stock', '>', 'stock_limit')->count())
+                ->badge(auth()->user()->role == 'admin' ? Product::query()->whereColumn('stock', '>', 'stock_limit')->count() : Product::query()->whereColumn('stock', '>', 'stock_limit')->where('branch_id', auth()->user()->branch_id)->count())
                 ->icon('heroicon-s-adjustments-vertical'),
             'low' => Tab::make('Low')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereColumn('stock','<', 'stock_limit'))
-                ->badge(Product::query()->whereColumn('stock', '<', 'stock_limit')->count())
+                ->badge(auth()->user()->role == 'admin' ? Product::query()->whereColumn('stock','<', 'stock_limit')->count() : Product::query()->whereColumn('stock','<', 'stock_limit')->where('branch_id', auth()->user()->branch_id)->count())
                 ->badgeColor('warning')
                 ->icon('heroicon-s-adjustments-vertical'),
             'damages' => Tab::make('Damages')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('damages', '!=', 0))
-                ->badge(Product::query()->where('damages', '!=', 0)->count())
+                ->badge(auth()->user()->role == 'admin' ? Product::query()->where('damages', '!=', 0)->count() : Product::query()->where('damages', '!=', 0)->where('branch_id', auth()->user()->branch_id)->count())
                 ->badgeColor('danger')
                 ->icon('heroicon-s-adjustments-vertical'),
             'empty' => Tab::make('Empty')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('stock', 0))
-                ->badge(Product::query()->where('stock', 0)->count())
+                ->badge(auth()->user()->role == 'admin' ? Product::query()->where('stock', 0)->count() : Product::query()->where('stock', 0)->where('branch_id', auth()->user()->branch_id)->count())
                 ->badgeColor('danger')
                 ->icon('heroicon-s-adjustments-vertical'),
         ];

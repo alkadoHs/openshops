@@ -69,7 +69,7 @@ class BranchTransferResource extends Resource
                 if(auth()->user()->role == 'admin')
                     return $query->orderBy('updated_at', 'desc');
                 else
-                   return $query->where('to_branch_id', auth()->user()->branch_id)->orWhere('from_branch_id', auth()->user()->branch_id)->orderBy('created_at', 'desc');
+                   return $query->where('to_branch_id', auth()->user()->branch_id)->orWhere('from_branch_id', auth()->user()->branch_id)->orderBy('updated_at', 'desc');
             })
             ->columns([
                 Tables\Columns\TextColumn::make('fromBranch.name')
