@@ -116,7 +116,7 @@ class BranchTransferResource extends Resource
                                     'main_product_id'=> $product->main_product_id,
                                     'stock' => $record->stock,
                                     'stock_limit' => 0,
-                                    'new_stock' => $record->stock,
+                                    'new_stock' => 0,
                                 ]);
                             }
                         }
