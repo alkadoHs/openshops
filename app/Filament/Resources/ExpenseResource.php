@@ -52,9 +52,9 @@ class ExpenseResource extends Resource
                                     ])
                                     ->addActionLabel('Add Item')
                                     ->columns(2)
+                                    ->live()
                                     ->deleteAction(fn (Get $get, Set $set) => static::updateTotal($get, $set))
                                 ])
-                                ->live()
                             ]),
                         Forms\Components\TextInput::make('total')
                             ->label('Total Cost')
